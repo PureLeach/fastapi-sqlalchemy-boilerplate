@@ -13,8 +13,8 @@ from sqlalchemy import (
     literal_column,
 )
 
-from project.core.db.helpers import metadata, exported_field
-
+from project.core.helpers.db import exported_field
+from project.core.db_connection import metadata
 
 
 users = Table(

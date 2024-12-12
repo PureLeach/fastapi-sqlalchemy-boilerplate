@@ -5,7 +5,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from project.core.db.helpers import metadata
+from project.core.db_connection import metadata
 from project.config.base import settings
 from project import tables
 

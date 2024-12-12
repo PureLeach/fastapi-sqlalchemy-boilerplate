@@ -3,7 +3,7 @@ run:
 
 
 create_migration:
-	alembic -c project/alembic.ini revision --autogenerate -m "$(m)"
+	alembic -c project/alembic.ini revision --autogenerate -m "$(name)"
 
 migrate_head:
 	alembic -c project/alembic.ini upgrade head
