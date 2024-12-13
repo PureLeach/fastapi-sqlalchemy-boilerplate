@@ -1,0 +1,26 @@
+[tool.pytest.ini_options]
+addopts = "-s --asyncio-mode=auto --import-mode=prepend"
+env = [
+    "POSTGRES_SERVER=localhost",
+    "REDIS_CACHE_HOST=localhost",
+    "REDIS_QUEUE_HOST=localhost",
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+disallow_incomplete_defs = true
+warn_unused_ignores = true
+exclude = "(.venv|tests/)"
+plugins = [
+    "pydantic.mypy",
+]
+
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+exclude = [".venv"]
+
+[tool.ruff.format]
+quote-style = "double"

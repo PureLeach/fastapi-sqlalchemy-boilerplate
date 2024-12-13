@@ -1,12 +1,8 @@
-from typing import Any, Optional, Type, overload
-
-from sqlalchemy import Column, FromClause, Subquery, and_, case, false, func, insert, select, true, update
-from sqlalchemy.sql import Select
+from sqlalchemy import insert, select
 from project.core.base_classes.base_repository import BaseRepository
 from project.modules.users.models import UserCreateRequest, UserResponse
 from project.tables.users import users
 from project.core.base_classes.base_model import PositiveInt32
-
 
 
 class UserRepository(BaseRepository):
@@ -15,14 +11,14 @@ class UserRepository(BaseRepository):
         rows = await self.db.fetch_all(query)
         result = [UserResponse(**row._mapping) for row in rows]
         return result
-    
+
     async def fetch_user(self, user_id: PositiveInt32) -> UserResponse | None:
         query = select(users).where(users.c.id == user_id)
         row = await self.db.fetch_one(query)
         if row:
             return UserResponse(**row._mapping)
         return None
-    
+
     async def insert_user(self, user: UserCreateRequest) -> UserResponse | None:
         query = insert(users).values(user.model_dump()).returning(users)
         row = await self.db.fetch_one(query=query)

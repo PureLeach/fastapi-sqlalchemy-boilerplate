@@ -1,17 +1,13 @@
 import asyncio
 import pathlib
 from typing import AsyncGenerator
-from unittest.mock import PropertyMock
 from httpx import ASGITransport, AsyncClient
 import pytest
-from databases import Database
 from project.config.base import settings
-import asyncio
-from alembic import command
+from alembic import command, config
 from sqlalchemy_utils import create_database, database_exists, drop_database
-import pytest
-from alembic.config import Config
 from project.main import app
+
 
 @pytest.fixture(scope="function", autouse=True)
 def anyio_backend():
@@ -30,16 +26,16 @@ async def test_client() -> AsyncGenerator[AsyncClient, None]:
         yield async_client
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 async def create_test_db() -> AsyncGenerator[None, None]:
     sync_url = settings.DB.DATABASE_DSN.replace("asyncpg", "psycopg2")
     try:
         if not database_exists(sync_url):
             create_database(sync_url)
         # Setup alembic and apply migrations:
-        config_path = pathlib.Path(__file__).parent.parent / 'project/alembic.ini'
-        alembic_config = Config(str(config_path))
-        command.upgrade(alembic_config, 'head')
+        config_path = pathlib.Path(__file__).parent.parent / "project/alembic.ini"
+        alembic_config = config.Config(str(config_path))
+        command.upgrade(alembic_config, "head")
         yield
     finally:
         drop_database(sync_url)
@@ -62,7 +58,6 @@ async def db():
 #         await transaction.rollback()
 
 
-
 # Method 3. First test pass, but program raises exception IndexError: list index out of range
 # @pytest.fixture(scope="function")
 # async def db():
@@ -76,12 +71,8 @@ async def db():
 #         await db.disconnect()
 
 
-
-
 # Method 4. databases/core.py:473: AssertionError
 # @pytest.fixture(scope="function")
 # async def db():
 #     async with Database(settings.DB.DATABASE_DSN, force_rollback=True) as db:
 #         yield db
-
-

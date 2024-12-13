@@ -1,18 +1,13 @@
-import math
 import traceback
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Callable, Optional, Type, TypeVar, Union
+from typing import AsyncGenerator, Optional, TypeVar
 
 from databases import Database
 from databases.core import Transaction
-from sqlalchemy import Column, Table, case, func, select
-from sqlalchemy.sql import Alias, CompoundSelect, Select
-from sqlalchemy.sql.elements import BooleanClauseList, Label
-from sqlalchemy.sql.selectable import FromClause
 from project.core.base_classes.base_model import ProjectBaseModel
 from project.config.base import settings
 
-ResponseModelType = TypeVar('ResponseModelType', bound=ProjectBaseModel)
+ResponseModelType = TypeVar("ResponseModelType", bound=ProjectBaseModel)
 
 
 class BaseRepository:
@@ -30,7 +25,7 @@ class BaseRepository:
         try:
             yield await current_transaction.start()
         except Exception as error:
-            self.logger.error(f'Transaction failed: {error}')
+            self.logger.error(f"Transaction failed: {error}")
             self.logger.error(traceback.print_exception(error))
             await current_transaction.rollback()
             raise error

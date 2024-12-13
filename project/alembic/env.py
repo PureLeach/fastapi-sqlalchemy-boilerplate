@@ -10,7 +10,6 @@ from project.config.base import settings
 from project import tables
 
 
-
 def load_models_from_package(package):
     """Recursively loads all modules in the specified folder"""
     package_path = package.__path__
@@ -22,6 +21,7 @@ def load_models_from_package(package):
         else:
             importlib.import_module(full_module_name)
 
+
 # Loading all tables from the tables folder
 load_models_from_package(tables)
 
@@ -31,7 +31,7 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(config.config_file_name)
+fileConfig(config.config_file_name)  # type: ignore[arg-type]
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -42,13 +42,14 @@ fileConfig(config.config_file_name)
 # We have to quote password string to pass special characters. This characters will be encoded by % prefix.
 # Also we have to escape percent-sign for BasicInterpolation.
 sync_url = settings.DB.DATABASE_DSN.replace("asyncpg", "psycopg2")
-config.set_main_option('sqlalchemy.url', sync_url)
+config.set_main_option("sqlalchemy.url", sync_url)
 target_metadata = metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
 
 def include_object(object, name, type_, reflected, compare_to):
     if type_ == "table" and object.info.get("skip_autogenerate", False):

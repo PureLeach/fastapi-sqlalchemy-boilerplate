@@ -23,5 +23,8 @@ class UserService(BaseService):
     async def create_user(self, user: UserCreateRequest) -> UserResponse:
         result = await self.repository.insert_user(user)
         if not result:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error creating user")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error creating user",
+            )
         return result

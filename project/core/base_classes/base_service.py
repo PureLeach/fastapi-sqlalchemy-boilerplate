@@ -4,7 +4,6 @@ from project.config.base import settings
 
 
 class BaseService:
-
     ds: BaseRepository
 
     def __init__(self) -> None:
