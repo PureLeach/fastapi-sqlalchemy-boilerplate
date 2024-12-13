@@ -10,15 +10,14 @@ from sqlalchemy.sql import Alias, CompoundSelect, Select
 from sqlalchemy.sql.elements import BooleanClauseList, Label
 from sqlalchemy.sql.selectable import FromClause
 from project.core.base_classes.base_model import ProjectBaseModel
-from project.core.db_connection import database
 from project.config.base import settings
 
 ResponseModelType = TypeVar('ResponseModelType', bound=ProjectBaseModel)
 
 
 class BaseRepository:
-    def __init__(self, db: Database = database) -> None:
-        self.db: Database = db
+    def __init__(self) -> None:
+        self.db: Database = settings.DB.db_instance
         self.logger = settings.LOGGER.getChild(self.__class__.__name__)
 
     @asynccontextmanager

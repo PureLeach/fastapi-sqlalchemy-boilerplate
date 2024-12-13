@@ -2,7 +2,6 @@ from fastapi import HTTPException
 from project.core.base_classes.base_service import BaseService
 from project.modules.users.models import UserCreateRequest, UserResponse
 from project.modules.users.repository import UserRepository
-from project.core.db_connection import database
 from fastapi import status
 from project.core.base_classes.base_model import PositiveInt32
 

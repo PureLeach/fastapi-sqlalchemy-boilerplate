@@ -2,13 +2,28 @@ import ssl
 from enum import Enum
 from pathlib import Path
 from ssl import SSLContext
+from typing import Optional
 from urllib.parse import quote
 
-from pydantic import PostgresDsn, field_validator
+from databases import Database
+from pydantic import PostgresDsn, PrivateAttr, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings
-
+from project.core.helpers.db import connection_init
 from pydantic import PostgresDsn, field_validator
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy import MetaData
+
+
+metadata = MetaData(
+    naming_convention={
+        'ix': 'ix_%(column_0_label)s',
+        'uq': 'uq_%(table_name)s_%(column_0_name)s',
+        'ck': 'ck_%(table_name)s_%(constraint_name)s',
+        'fk': 'fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s',
+        'pk': 'pk_%(table_name)s',
+    }
+)
 
 
 class DBConfig(BaseSettings):
@@ -19,10 +34,11 @@ class DBConfig(BaseSettings):
     POSTGRES_DB_NAME: str = ""
     
     DATABASE_DSN: str = ""
+    _database: Database | None = PrivateAttr(None)
 
     @field_validator('DATABASE_DSN', mode='before')
     @classmethod
-    def assemble_db_uri(cls, _: str | None, values: ValidationInfo) -> str:
+    def assemble_db_dsn(cls, _: str, values: ValidationInfo) -> str:
         return str(
             PostgresDsn.build(
                 scheme='postgresql+asyncpg',
@@ -33,3 +49,10 @@ class DBConfig(BaseSettings):
                 path=f'{values.data["POSTGRES_DB_NAME"]}',
             )
         )
+
+    @property
+    def db_instance(self) -> Database:
+        if self._database is None:
+            create_async_engine(self.DATABASE_DSN, echo=True)
+            self._database = Database(self.DATABASE_DSN, server_settings={'jit': 'off'}, init=connection_init)
+        return self._database

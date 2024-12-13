@@ -14,8 +14,7 @@ from sqlalchemy import (
 )
 
 from project.core.helpers.db import exported_field
-from project.core.db_connection import metadata
-
+from project.config.db import metadata
 
 users = Table(
     'users',

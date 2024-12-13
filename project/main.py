@@ -3,14 +3,13 @@ import logging
 from typing import AsyncGenerator
 from fastapi import FastAPI
 from project.config.base import settings
-from project.core.db_connection import database
 from project.core.routers import register_routers
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator:
-    await database.connect()
+    await settings.DB.db_instance.connect()
     yield
-    await database.disconnect()
+    await settings.DB.db_instance.disconnect()
 
 def setup_logging_context() -> None:
     logging.basicConfig(
