@@ -1,9 +1,8 @@
 [tool.pytest.ini_options]
 addopts = "-s --asyncio-mode=auto --import-mode=prepend"
 env = [
-    "POSTGRES_SERVER=localhost",
-    "REDIS_CACHE_HOST=localhost",
-    "REDIS_QUEUE_HOST=localhost",
+    "POSTGRES_HOST=localhost",
+    "POSTGRES_DB_NAME=fastapi-boilerplate-test",
 ]
 
 [tool.mypy]
