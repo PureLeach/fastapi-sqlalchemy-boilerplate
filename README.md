@@ -1,6 +1,6 @@
 # fastapi-sqlalchemy-boilerplate
 
-This project provides a boilerplate for a FastAPI application integrated with SQLAlchemy 2 (async) and the [databases](https://pypi.org/project/databases/) library for async database interactions. It uses PostgreSQL as the database backend, and Docker is used to set up the PostgreSQL container.
+This project provides a boilerplate for a FastAPI application integrated with SQLAlchemy 2 (async) and the [databases](https://pypi.org/project/databases/) library for async database interactions. It uses PostgreSQL as the database backend and Docker is used to set up the PostgreSQL container.
 
 ## Setup Instructions
 
@@ -75,7 +75,8 @@ This will run all the tests defined in the project.
 ## Notes
 
 - Ensure that PostgreSQL is running before you attempt to start the FastAPI application.
-- The `migrate_head` command applies the latest database migrations. Make sure the database is initialized and running.
+- The `make migrate_head` command applies the latest database migrations. Make sure the database is initialized and running.
+- To generate a new migration, use the command `make create_migration name=new_migration` 
 
 ---
 
