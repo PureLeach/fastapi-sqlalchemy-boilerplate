@@ -1,11 +1,13 @@
 import asyncio
 import pathlib
-from typing import AsyncGenerator
-from httpx import ASGITransport, AsyncClient
+from collections.abc import AsyncGenerator
+
 import pytest
-from project.config.base import settings
 from alembic import command, config
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy_utils import create_database, database_exists, drop_database
+
+from project.config.base import settings
 from project.main import app
 
 

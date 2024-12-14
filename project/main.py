@@ -1,7 +1,9 @@
-from contextlib import asynccontextmanager
 import logging
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
 from project.config.base import settings
 from project.core.routers import register_routers
 

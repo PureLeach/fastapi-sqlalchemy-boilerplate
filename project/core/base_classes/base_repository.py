@@ -1,11 +1,15 @@
 import traceback
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Optional, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
-from databases import Database
 from databases.core import Transaction
-from project.core.base_classes.base_model import ProjectBaseModel
+
 from project.config.base import settings
+from project.core.base_classes.base_model import ProjectBaseModel
+
+if TYPE_CHECKING:
+    from databases import Database
 
 ResponseModelType = TypeVar("ResponseModelType", bound=ProjectBaseModel)
 
@@ -16,11 +20,8 @@ class BaseRepository:
         self.logger = settings.LOGGER.getChild(self.__class__.__name__)
 
     @asynccontextmanager
-    async def transaction(self, isolation: Optional[str] = None) -> AsyncGenerator[Transaction, None]:
-        if isolation:
-            current_transaction = self.db.transaction(isolation=isolation)
-        else:
-            current_transaction = self.db.transaction()
+    async def transaction(self, isolation: str | None = None) -> AsyncGenerator[Transaction, None]:
+        current_transaction = self.db.transaction(isolation=isolation) if isolation else self.db.transaction()
 
         try:
             yield await current_transaction.start()

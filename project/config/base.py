@@ -1,5 +1,7 @@
 import logging
+
 from pydantic_settings import BaseSettings
+
 from project.config.db import DBConfig
 from project.config.logging import LoggingConfig
 

@@ -1,15 +1,15 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
+
+from project.core.base_classes.base_model import PositiveInt32
 from project.core.base_classes.base_service import BaseService
 from project.modules.users.models import UserCreateRequest, UserResponse
 from project.modules.users.repository import UserRepository
-from fastapi import status
-from project.core.base_classes.base_model import PositiveInt32
 
 
 class UserService(BaseService):
-    def __init__(self, repository: UserRepository = UserRepository()) -> None:
+    def __init__(self, repository: UserRepository | None = None) -> None:
         super().__init__()
-        self.repository = repository
+        self.repository = repository or UserRepository()
 
     async def get_users(self) -> list[UserResponse]:
         return await self.repository.fetch_all_users()

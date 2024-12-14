@@ -3,8 +3,7 @@ from typing import Any
 
 
 async def connection_init(connection: Any) -> None:
-    """
-    Enable JSON -> dict conversion:
+    """Enable JSON -> dict conversion:
     https://github.com/encode/databases/issues/138
     https://magicstack.github.io/asyncpg/current/usage.html#example-automatic-json-conversion
     https://github.com/encode/databases/issues/143

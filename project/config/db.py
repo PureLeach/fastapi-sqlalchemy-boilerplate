@@ -4,10 +4,10 @@ from databases import Database
 from pydantic import PostgresDsn, PrivateAttr, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings
-from project.core.helpers.db import connection_init
-from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import create_async_engine
 
+from project.core.helpers.db import connection_init
 
 metadata = MetaData(
     naming_convention={
@@ -16,7 +16,7 @@ metadata = MetaData(
         "ck": "ck_%(table_name)s_%(constraint_name)s",
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "pk": "pk_%(table_name)s",
-    }
+    },
 )
 
 
@@ -41,7 +41,7 @@ class DBConfig(BaseSettings):
                 host=values.data["POSTGRES_HOST"],
                 port=values.data["POSTGRES_PORT"],
                 path=f'{values.data["POSTGRES_DB_NAME"]}',
-            )
+            ),
         )
 
     @property

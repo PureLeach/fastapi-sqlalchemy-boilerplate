@@ -8,8 +8,8 @@ from sqlalchemy import (
     func,
 )
 
-from project.core.helpers.db import exported_field
 from project.config.db import metadata
+from project.core.helpers.db import exported_field
 
 users = Table(
     "users",

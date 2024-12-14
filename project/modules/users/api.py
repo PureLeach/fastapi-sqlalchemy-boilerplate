@@ -1,8 +1,8 @@
-from fastapi import Request, status, APIRouter
+from fastapi import APIRouter, Request, status
+
+from project.core.base_classes.base_model import PositiveInt32
 from project.modules.users.models import UserCreateRequest, UserResponse
 from project.modules.users.service import UserService
-from project.core.base_classes.base_model import PositiveInt32
-
 
 users_router = APIRouter(tags=["Users"])
 
@@ -11,7 +11,7 @@ users_router = APIRouter(tags=["Users"])
     "/users/",
     summary="Get all users",
 )
-async def get_all_users(request: Request) -> list[UserResponse]:
+async def get_all_users(_: Request) -> list[UserResponse]:
     service = UserService()
     return await service.get_users()
 
@@ -20,7 +20,7 @@ async def get_all_users(request: Request) -> list[UserResponse]:
     "/users/{user_id}/",
     summary="Get user",
 )
-async def get_user(request: Request, user_id: PositiveInt32) -> UserResponse:
+async def get_user(_: Request, user_id: PositiveInt32) -> UserResponse:
     service = UserService()
     return await service.get_user(user_id)
 
@@ -30,6 +30,6 @@ async def get_user(request: Request, user_id: PositiveInt32) -> UserResponse:
     summary="Create user",
     status_code=status.HTTP_201_CREATED,
 )
-async def create_user(request: Request, user: UserCreateRequest) -> UserResponse:
+async def create_user(_: Request, user: UserCreateRequest) -> UserResponse:
     service = UserService()
     return await service.create_user(user)

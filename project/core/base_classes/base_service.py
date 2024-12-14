@@ -1,6 +1,5 @@
-from project.core.base_classes.base_repository import BaseRepository
-
 from project.config.base import settings
+from project.core.base_classes.base_repository import BaseRepository
 
 
 class BaseService:

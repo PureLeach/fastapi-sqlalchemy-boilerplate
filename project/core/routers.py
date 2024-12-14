@@ -1,25 +1,24 @@
-import os
 import importlib.util
-from fastapi import FastAPI, APIRouter
+import os
 from importlib.machinery import ModuleSpec
-from typing import Optional
-import pathlib
-from project.config.base import settings
+from pathlib import Path
 
+from fastapi import APIRouter, FastAPI
+
+from project.config.base import settings
 
 logger = settings.LOGGER.getChild("register_routers")
 
 
 def register_routers(app: FastAPI) -> None:
     """Basic function for bypassing modules and registering routers"""
-
     logger.debug("Router registration")
-    modules_directory = str(pathlib.Path(__file__).parent.parent / "modules")
-    for root, dirs, files in os.walk(modules_directory):
+    modules_directory = str(Path(__file__).parent.parent / "modules")
+    for root, _dirs, files in os.walk(modules_directory):
         for file in files:
             if file.endswith(".py"):
-                module_path = os.path.join(root, file)
-                module_name = os.path.splitext(file)[0]
+                module_path = Path(root) / file
+                module_name = Path(file).stem
 
                 spec = importlib.util.spec_from_file_location(module_name, module_path)
                 if spec is not None:
@@ -32,7 +31,7 @@ def register_routers(app: FastAPI) -> None:
                     logger.error(f"Failed to find a specification for module {module_name} from {module_path}")
 
 
-def load_module(spec: ModuleSpec) -> Optional[object]:
+def load_module(spec: ModuleSpec) -> object | None:
     """Loading and executing the module"""
     if spec.loader is not None:
         module = importlib.util.module_from_spec(spec)

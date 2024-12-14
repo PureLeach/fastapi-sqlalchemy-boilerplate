@@ -1,14 +1,14 @@
+from datetime import datetime
 from typing import Annotated
 
 from humps import camelize
+from pydantic import AwareDatetime as AwareDatetimeOriginal
 from pydantic import (
     BaseModel,
     BeforeValidator,
     ConfigDict,
     Field,
 )
-from pydantic import AwareDatetime as AwareDatetimeOriginal
-from datetime import datetime
 
 
 class ProjectBaseModel(BaseModel):
@@ -24,7 +24,7 @@ def fix_postgres_datetime(v: str | datetime) -> str | datetime:
     """Workaround for https://github.com/pydantic/pydantic/issues/6576"""
     if isinstance(v, str) and "+" in v:
         dt, tz = v.split("+")
-        if len(tz) == 2:
+        if len(tz) == 2:  # noqa: PLR2004
             return f"{dt}+{tz}00"
     return v
 
