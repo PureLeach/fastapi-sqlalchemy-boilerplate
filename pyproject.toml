@@ -101,3 +101,11 @@ ignore = [
     "ARG001",    # allow unused function argument
     "ERA001",    # allow commented-out code
     ]
+
+
+[tool.vulture]
+paths = ["project/",]
+exclude = [".venv/", "project/alembic/"]
+ignore_decorators = ["@app.route", ]
+min_confidence = 70
+ignore_names = ["cls",]
